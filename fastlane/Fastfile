@@ -1,0 +1,28 @@
+# Change the syntax highlighting to Ruby
+# All lines starting with a # are ignored when running `fastlane`
+
+# If you want to automatically update fastlane if a new version is available:
+# update_fastlane
+
+# This is the minimum version number required.
+# Update this if you use features of a newer version
+fastlane_version "2.105.2"
+
+default_platform :android
+
+platform :android do
+
+  desc "Runs unit tests"
+  desc "Sample usage:"
+  desc "- unit_test"
+  lane :unit_test do |options|
+    gradle(task: "testReleaseUnitTest")
+  end
+
+ desc "Builds APK"
+  lane :build_apk do
+    raise "This lane is meant for CircleCI only".red unless is_ci?
+    gradle(task: "assembleRelease")
+  end
+
+end

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Roxie</string>
+    <string name="error_loading_notes">Error loading notes</string>
+    <string name="note_detail_id">id: %s</string>
+    <string name="note_detail_text">text: %s</string>
+    <string name="error_loading_note">Error loading note</string>
+    <string name="delete_note_button_text">Delete</string>
+    <string name="error_deleting_note">Error deleting note</string>
+</resources>

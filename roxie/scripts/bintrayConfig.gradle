@@ -1,0 +1,50 @@
+/*
+>>>>> To publish use below
+
+    ./gradlew clean build install bintrayUpload -Ppublish=true
+
+>>>>> To publish with javadoc Fail on error flag set to false
+
+   ./gradlew clean build install bintrayUpload -Ppublish=true -PjavadocFlag=true
+
+*/
+
+// publish property is checked here first
+if (project.hasProperty('publish') && project.getProperty('publish')) {
+  // Bintray Params
+  ext {
+    bintrayRepo = 'maven'
+    bintrayName = rootProject.ext.libBintrayName
+
+    publishedGroupId = GROUP
+    libraryName = rootProject.ext.libModuleName
+    artifact = rootProject.ext.libModuleName // Has to be same as your library module name
+
+    libraryDescription = rootProject.ext.libModuleDesc
+
+    // Your github repo link
+    siteUrl = rootProject.ext.libPomUrl
+    gitUrl = rootProject.ext.libPomUrl + '.git'
+    githubRepository = rootProject.ext.libGithubRepo
+
+    libraryVersion = rootProject.ext.libVersionName
+
+    developerId = POM_DEVELOPER_ID
+    developerName = POM_DEVELOPER_NAME
+    developerEmail = POM_DEVELOPER_EMAILID
+
+    licenseName = POM_LICENCE_NAME
+    licenseUrl = POM_LICENCE_URL
+    allLicenses = [POM_ALL_LICENCES]
+  }
+
+  // Place it at the end of the file
+  apply from: './scripts/installv1.gradle'
+  apply from: './scripts/bintrayv1.gradle'
+
+  if (project.hasProperty('javadocFlag') && project.getProperty('javadocFlag')) {
+    javadoc {
+      failOnError = false
+    }
+  }
+}

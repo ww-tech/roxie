@@ -1,0 +1,54 @@
+buildscript {
+    ext.kotlin_version = '1.2.71'
+    repositories {
+        google()
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:3.1.4'
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+subprojects {
+    configurations.all {
+        resolutionStrategy {
+            forcedModules = [
+                    "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version",
+                    "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+            ]
+        }
+    }
+}
+
+task clean(type: Delete) {
+    delete rootProject.buildDir
+}
+
+ext {
+    targetSdkVersion = 28
+    minSdkVersion = 14
+    compileSdkVersion = targetSdkVersion
+    supportLibVersion = '28.0.0'
+    rxJavaVersion = '2.2.2'
+
+    // Roxie Library
+    libVersionCode = 1
+    libVersionName = '0.1.0'
+
+    libPomUrl = 'https://github.com/ww-tech/roxie'
+    libGithubRepo = 'ww-tech/roxie'
+    libModuleName = 'roxie'
+    libModuleDesc = 'Lightweight Android library for building reactive apps.'
+    libBintrayName = 'roxie'
+}

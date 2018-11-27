@@ -1,0 +1,56 @@
+version: 2
+
+references:
+  workspace: &workspace
+    ~/src
+
+  defaults: &defaults
+    working_directory: *workspace
+    docker:
+      - image: circleci/android:api-28-alpha
+    environment:
+      TERM: dumb
+
+  gems_key: &gems_key
+    gems-{{ checksum "Gemfile.lock" }}
+
+  restore_gems_cache: &restore_gems_cache
+    restore_cache:
+      key: *gems_key
+
+  save_gems_cache: &save_gems_cache
+    save_cache:
+      key: *gems_key
+      paths:
+        - vendor/bundle
+
+  ruby_dependencies: &ruby_dependencies
+    run:
+      name: Download Ruby Dependencies
+      command: bundle check || bundle install --path vendor/bundle
+
+  android_dependencies: &android_dependencies
+    run:
+      name: Download Android Dependencies
+      command: ./gradlew androidDependencies
+
+
+
+jobs:
+  build-and-test:
+    resource_class: large
+    <<: *defaults
+    steps:
+      - checkout
+      - *restore_gems_cache
+      - *ruby_dependencies
+      - *android_dependencies
+      - *save_gems_cache
+      - run:
+          name: Build APK
+          command: bundle exec fastlane build_apk
+          no_output_timeout: "15m"
+      - run:
+          name: Run Unit Tests
+          command: bundle exec fastlane unit_test
+          no_output_timeout: "15m"

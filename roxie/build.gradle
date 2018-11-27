@@ -1,0 +1,28 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.libVersionCode
+        versionName rootProject.ext.libVersionName
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // ViewModel and LiveData
+    compileOnly 'android.arch.lifecycle:extensions:1.1.1'
+
+    compileOnly "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+}
+
+// applied specifically at the bottom
+apply from: './scripts/bintrayConfig.gradle'
