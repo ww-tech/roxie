@@ -16,7 +16,7 @@ if (project.hasProperty('publish') && project.getProperty('publish')) {
     bintrayRepo = 'maven'
     bintrayName = rootProject.ext.libBintrayName
 
-    publishedGroupId = GROUP
+    publishedGroupId = 'com.ww'
     libraryName = rootProject.ext.libModuleName
     artifact = rootProject.ext.libModuleName // Has to be same as your library module name
 
