@@ -93,7 +93,6 @@ class NoteDetailViewModel(
             .scan(initialState, reducer)
             .filter { !it.isIdle && !it.isLoading }
             .distinctUntilChanged()
-            .doOnNext { Timber.d("Received state: $it") }
             .subscribe(state::postValue, Timber::e)
     }
 }

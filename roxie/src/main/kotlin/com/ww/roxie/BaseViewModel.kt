@@ -16,6 +16,7 @@
 package com.ww.roxie
 
 import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
@@ -38,8 +39,12 @@ abstract class BaseViewModel<A : BaseAction, S : BaseState> : ViewModel() {
     /**
      * Returns the current state. It is equal to the last value returned by the store's reducer.
      */
-    val observableState: LiveData<S>
-        get() = state
+    val observableState: LiveData<S> = MediatorLiveData<S>().apply {
+        addSource(state) { data ->
+            Roxie.log("$tag: Received state: $data")
+            setValue(data)
+        }
+    }
 
     /**
      * Dispatches an action. This is the only way to trigger a state change.

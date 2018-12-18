@@ -28,7 +28,7 @@ class SampleApp : Application() {
 
         Roxie.enableLogging(object : Roxie.Logger {
             override fun log(msg: String) {
-                Timber.d(msg)
+                Timber.tag("Roxie").d(msg)
             }
         })
     }

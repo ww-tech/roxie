@@ -73,7 +73,6 @@ class NoteListViewModel(
             .scan(initialState, reducer)
             .filter { !it.isIdle }
             .distinctUntilChanged()
-            .doOnNext { Timber.d("Received state: $it") }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(state::setValue, Timber::e)
     }
