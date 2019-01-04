@@ -39,9 +39,9 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    implementation 'com.ww:roxie:0.1.0'
+
     testImplementation 'junit:junit:4.12'
     testImplementation 'com.nhaarman:mockito-kotlin:1.6.0'
     testImplementation 'android.arch.core:core-testing:1.1.1'
-
-    implementation project(':roxie')
 }
