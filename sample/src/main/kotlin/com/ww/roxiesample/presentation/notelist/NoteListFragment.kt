@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2018. WW International, Inc.
+* Copyright (C) 2019. WW International, Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -43,7 +43,8 @@ class NoteListFragment : Fragment() {
     private lateinit var viewModel: NoteListViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.note_list, container, false)

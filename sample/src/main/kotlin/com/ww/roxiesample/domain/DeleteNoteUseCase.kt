@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2018. WW International, Inc.
+* Copyright (C) 2019. WW International, Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -17,7 +17,6 @@ package com.ww.roxiesample.domain
 
 import com.ww.roxiesample.data.NoteRepository
 import io.reactivex.Completable
-
 
 class DeleteNoteUseCase {
     fun delete(note: Note): Completable =

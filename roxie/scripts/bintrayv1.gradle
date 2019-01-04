@@ -41,6 +41,7 @@ bintray {
   pkg {
     repo = bintrayRepo
     name = bintrayName
+    userOrg = "ww-tech"
     desc = libraryDescription
     websiteUrl = siteUrl
     issueTrackerUrl = siteUrl + '/issues'

@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2018. WW International, Inc.
+* Copyright (C) 2019. WW International, Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -18,8 +18,10 @@ package com.ww.roxiesample.presentation.notelist
 import android.support.v7.util.DiffUtil
 import com.ww.roxiesample.domain.Note
 
-class ItemDiffCallback(private val old: List<Note>,
-                       private val new: List<Note>) : DiffUtil.Callback() {
+class ItemDiffCallback(
+    private val old: List<Note>,
+    private val new: List<Note>
+) : DiffUtil.Callback() {
     override fun getOldListSize() = old.size
 
     override fun getNewListSize() = new.size

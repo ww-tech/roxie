@@ -54,7 +54,7 @@ To control logging, check out [documentation](https://github.com/ww-tech/roxie/w
 
 ## License
 
-    Copyright 2018 WW International, Inc.
+    Copyright 2019 WW International, Inc.
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
