@@ -54,3 +54,10 @@ jobs:
           name: Run Unit Tests
           command: bundle exec fastlane unit_test
           no_output_timeout: "15m"
+
+
+workflows:
+  version: 2
+  build-test:
+    jobs:
+      - build-and-test
