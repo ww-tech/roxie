@@ -47,8 +47,8 @@ ext {
     rxJavaVersion = '2.2.2'
 
     // Roxie Library
-    libVersionCode = 1
-    libVersionName = '0.1.0'
+    libVersionCode = 2
+    libVersionName = '0.2.0'
 
     libPomUrl = 'https://github.com/ww-tech/roxie'
     libGithubRepo = 'ww-tech/roxie'
