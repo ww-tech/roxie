@@ -50,8 +50,6 @@ dependencies {
 }
 ```
 
-To control logging, check out [documentation](https://github.com/ww-tech/roxie/wiki/7.-Logging).
-
 ## License
 
     Copyright 2019 WW International, Inc.
