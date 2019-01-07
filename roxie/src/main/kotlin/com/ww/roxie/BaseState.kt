@@ -26,5 +26,5 @@ interface BaseState {
      *
      * Useful for hiding sensitive information when logging states.
      */
-    fun obfuscatedString() = "${javaClass.simpleName}@${javaClass.hashCode()}"
+    fun obfuscatedString() = "${javaClass.simpleName}@${hashCode()}"
 }

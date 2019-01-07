@@ -48,7 +48,7 @@ ext {
 
     // Roxie Library
     libVersionCode = 2
-    libVersionName = '0.2.0'
+    libVersionName = '0.2.1'
 
     libPomUrl = 'https://github.com/ww-tech/roxie'
     libGithubRepo = 'ww-tech/roxie'

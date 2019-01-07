@@ -23,6 +23,9 @@ dependencies {
     compileOnly 'android.arch.lifecycle:extensions:1.1.1'
 
     compileOnly "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.amshove.kluent:kluent:1.45'
 }
 
 // applied specifically at the bottom
