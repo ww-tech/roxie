@@ -8,7 +8,7 @@ Roxie is a lightweight Android library for building reactive apps. We successful
 
 Roxie implements Unidirectional Data Flow (UDF) concepts introduced by [Redux](https://redux.js.org/). The core idea is that user Actions get dispatched to a Store (State container) which uses Reducers to transform them into States. In Android world, this design pattern is known as MVI (Model-View-Intent) where Model describes State and Intent describes user interaction.
 
-Roxie is a tiny library (merely 46 methods and 52 lines of code including comments). It is implemented using widely adopted lifecycle Google Architecture Components and RxJava. Hopefully, the small footprint of this library will enable you to fully understand both concepts and implementation details.
+Roxie is a tiny library. It is implemented using widely adopted Lifecycle Google Architecture Components and RxJava2. Hopefully, the small footprint of this library will enable you to fully understand both concepts and implementation details.
 
 ## Roxie in a nutshell
 
@@ -46,11 +46,9 @@ Add the following Gradle dependency to your project `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation 'com.ww:roxie:0.1.0'
+    implementation 'com.ww:roxie:0.2.0'
 }
 ```
-
-To control logging, check out [documentation](https://github.com/ww-tech/roxie/wiki/7.-Logging).
 
 ## License
 
