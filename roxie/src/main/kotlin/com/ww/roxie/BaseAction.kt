@@ -26,5 +26,5 @@ interface BaseAction {
      *
      * Useful for hiding sensitive information when logging actions.
      */
-    fun obfuscatedString() = "${javaClass.simpleName}@${javaClass.hashCode()}"
+    fun obfuscatedString() = "${javaClass.simpleName}@${hashCode()}"
 }
