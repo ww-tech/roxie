@@ -15,17 +15,18 @@
 */
 package com.ww.roxiesample.presentation.notelist
 
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.ww.roxiesample.R
 import com.ww.roxiesample.domain.Note
 
 typealias ClickListener = (Note) -> Unit
 
-class NoteAdapter(private val clickListener: ClickListener) : RecyclerView.Adapter<NoteAdapter.ViewHolder>() {
+class NoteAdapter(private val clickListener: ClickListener) : Adapter<NoteAdapter.ViewHolder>() {
 
     private var notes = emptyList<Note>()
 

@@ -16,7 +16,7 @@
 package com.ww.roxiesample
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.ww.roxiesample.presentation.notelist.NoteListFragment
 
 class MainActivity : AppCompatActivity() {
