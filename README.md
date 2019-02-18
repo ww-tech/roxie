@@ -1,6 +1,6 @@
 # Roxie
 
-[![CircleCI](https://circleci.com/gh/ww-tech/roxie/tree/master.svg?style=shield&circle-token=86ceda91392b3e6720cc5fe553c90eec36195b03)](https://circleci.com/gh/ww-tech/roxie/tree/master)
+[![CircleCI](https://circleci.com/gh/ww-tech/roxie/tree/master.svg?style=shield&circle-token=86ceda91392b3e6720cc5fe553c90eec36195b03)](https://circleci.com/gh/ww-tech/roxie/tree/master) [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23349-2CA3E6.svg?style=flat)](http://androidweekly.net/issues/issue-349)
 
 Roxie is a lightweight Android library for building reactive apps. We successfully use it for Android product development at WW.
 
