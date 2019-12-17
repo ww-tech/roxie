@@ -1,5 +1,5 @@
 # Gemfile
 source 'http://rubygems.org'
 
-gem 'json', '>= 2.1.0'
-gem 'fastlane', '>= 2.128.1'
+gem 'excon', '>= 0.71.0'
+gem 'fastlane', '>= 2.137.0'
