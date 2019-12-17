@@ -38,7 +38,6 @@ references:
 
 jobs:
   build-and-test:
-    resource_class: large
     <<: *defaults
     steps:
       - checkout
