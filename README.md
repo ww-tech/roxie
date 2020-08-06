@@ -1,6 +1,12 @@
-# Roxie
-
-[![CircleCI](https://circleci.com/gh/ww-tech/roxie/tree/master.svg?style=shield&circle-token=86ceda91392b3e6720cc5fe553c90eec36195b03)](https://circleci.com/gh/ww-tech/roxie/tree/master) [![Android Weekly](https://img.shields.io/badge/Android%20Weekly-%23349-2CA3E6.svg?style=flat)](http://androidweekly.net/issues/issue-349)
+<h1 align="center"><img src="docs/roxie-logo.svg" width="75%" alt="Roxie logo" /></h1>
+<p align="center">
+	<a href="https://circleci.com/gh/ww-tech/roxie/tree/master">
+		<img src="https://circleci.com/gh/ww-tech/roxie/tree/master.svg?style=shield&circle-token=86ceda91392b3e6720cc5fe553c90eec36195b03" />
+	</a>
+	<a href="http://androidweekly.net/issues/issue-349">
+    	<img src="https://img.shields.io/badge/Android%20Weekly-%23349-2CA3E6.svg?style=flat" />
+    </a>
+</p>
 
 Roxie is a lightweight Android library for building reactive apps. We successfully use it for Android product development at WW (formerly Weight Watchers).
 
