@@ -17,7 +17,12 @@ package com.ww.roxiesample.domain
 
 import com.ww.roxiesample.data.NoteRepository
 import io.reactivex.Single
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class GetNoteListUseCase {
-    fun loadAll(): Single<List<Note>> = Single.just(NoteRepository.loadAll())
+
+    suspend fun loadAll(): List<Note> = withContext(Dispatchers.IO){
+        NoteRepository.loadAll()
+    }
 }
