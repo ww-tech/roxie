@@ -1,1 +1,4 @@
-include ':sample', ':roxie'
+include ':sample'
+include ':roxie'
+include ':roxie-coroutines'
+include ':roxie-rxjava2'

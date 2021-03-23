@@ -22,7 +22,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.ww.roxiesample.R
 import com.ww.roxiesample.domain.DeleteNoteUseCase
 import com.ww.roxiesample.domain.GetNoteDetailUseCase
@@ -63,7 +63,7 @@ class NoteDetailFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Normally ViewModelFactory should be injected here along with its UseCases injected into it
-        viewModel = ViewModelProviders.of(
+        viewModel = ViewModelProvider(
             this,
             NoteDetailViewModelFactory(null, GetNoteDetailUseCase(), DeleteNoteUseCase())
         ).get(NoteDetailViewModel::class.java)

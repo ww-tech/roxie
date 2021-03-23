@@ -1,0 +1,35 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: "org.jlleitschuh.gradle.ktlint"
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.libVersionCode
+        versionName rootProject.ext.libVersionName
+    }
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+    }
+}
+
+dependencies {
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    // ViewModel and LiveData
+    compileOnly "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.ext.lifecycleVersion"
+    compileOnly "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.ext.lifecycleVersion"
+
+    compileOnly "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+
+    api project(":roxie")
+
+    testImplementation "junit:junit:$rootProject.ext.junitVersion"
+    testImplementation 'org.amshove.kluent:kluent:1.45'
+}
+
+// applied specifically at the bottom
+apply from: './scripts/bintrayConfig.gradle'

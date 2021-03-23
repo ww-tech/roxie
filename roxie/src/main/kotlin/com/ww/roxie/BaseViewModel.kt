@@ -19,16 +19,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.subjects.PublishSubject
 
 /**
  * Store which manages business data and state.
  */
 abstract class BaseViewModel<A : BaseAction, S : BaseState> : ViewModel() {
-    protected val actions: PublishSubject<A> = PublishSubject.create<A>()
-
-    protected val disposables: CompositeDisposable = CompositeDisposable()
 
     protected abstract val initialState: S
 
@@ -39,6 +34,7 @@ abstract class BaseViewModel<A : BaseAction, S : BaseState> : ViewModel() {
     /**
      * Returns the current state. It is equal to the last value returned by the store's reducer.
      */
+    @Suppress("unused")
     val observableState: LiveData<S> = MediatorLiveData<S>().apply {
         addSource(state) { data ->
             Roxie.log("$tag: Received state: $data")
@@ -49,12 +45,12 @@ abstract class BaseViewModel<A : BaseAction, S : BaseState> : ViewModel() {
     /**
      * Dispatches an action. This is the only way to trigger a state change.
      */
+    @Suppress("unused")
     fun dispatch(action: A) {
         Roxie.log("$tag: Received action: $action")
-        actions.onNext(action)
+        offerAction(action)
     }
 
-    override fun onCleared() {
-        disposables.clear()
-    }
+    abstract fun offerAction(action: A)
+
 }

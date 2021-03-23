@@ -17,7 +17,11 @@ package com.ww.roxiesample.domain
 
 import com.ww.roxiesample.data.NoteRepository
 import io.reactivex.Single
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class GetNoteListUseCase {
-    fun loadAll(): Single<List<Note>> = Single.just(NoteRepository.loadAll())
+    fun loadAll(): Flow<List<Note>> = flow {
+        emit(NoteRepository.loadAll())
+    }
 }
