@@ -23,6 +23,10 @@ dependencies {
     compileOnly "androidx.lifecycle:lifecycle-viewmodel-ktx:$rootProject.ext.lifecycleVersion"
     compileOnly "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.ext.lifecycleVersion"
 
+    compileOnly "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
+
+    api project(":roxie")
+
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
     testImplementation 'org.amshove.kluent:kluent:1.45'
 }

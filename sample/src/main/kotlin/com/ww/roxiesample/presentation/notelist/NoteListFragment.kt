@@ -22,7 +22,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ww.roxiesample.R
 import com.ww.roxiesample.domain.GetNoteListUseCase
@@ -55,12 +55,12 @@ class NoteListFragment : Fragment() {
         setupRecyclerView()
 
         // Normally ViewModelFactory should be injected here along with its UseCases injected into it
-        viewModel = ViewModelProviders.of(this, NoteListViewModelFactory(null, GetNoteListUseCase()))
+        viewModel = ViewModelProvider(this, NoteListViewModelFactory(null, GetNoteListUseCase()))
             .get(NoteListViewModel::class.java)
 
-        viewModel.observableState.observe(this, Observer { state ->
+        viewModel.observableState.observe(this) { state ->
             state?.let { renderState(state) }
-        })
+        }
 
         viewModel.dispatch(Action.LoadNotes)
     }
