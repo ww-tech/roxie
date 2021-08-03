@@ -29,7 +29,7 @@ object NoteRepository {
 
     fun loadAll(): List<Note> = notes.toList()
 
-    fun findById(id: Long): Note? = notes.firstOrNull { it.id == id }
+    suspend fun findById(id: Long): Note? = notes.firstOrNull { it.id == id }
 
-    fun delete(note: Note): Boolean = notes.remove(note)
+    suspend fun delete(note: Note): Boolean = notes.remove(note)
 }

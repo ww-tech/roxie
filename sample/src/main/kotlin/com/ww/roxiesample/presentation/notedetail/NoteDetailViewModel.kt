@@ -1,5 +1,5 @@
 /*
-* Copyright (C) 2019Action.kt. WW International, Inc.
+* Copyright (C) 2019. WW International, Inc.
 *
 * Licensed under the Apache License, Version 2.0 (the "License");
 * you may not use this file except in compliance with the License.
@@ -15,21 +15,22 @@
 */
 package com.ww.roxiesample.presentation.notedetail
 
-import com.ww.roxie.BaseViewModel
+import androidx.lifecycle.viewModelScope
+import com.ww.roxie.BaseCoroutineViewModel
 import com.ww.roxie.Reducer
 import com.ww.roxiesample.domain.DeleteNoteUseCase
 import com.ww.roxiesample.domain.GetNoteDetailUseCase
-import io.reactivex.Observable
-import io.reactivex.rxkotlin.ofType
-import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 class NoteDetailViewModel(
     initialState: State?,
     private val noteDetailUseCase: GetNoteDetailUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase
-) : BaseViewModel<Action, State>() {
+) : BaseCoroutineViewModel<Action, State>() {
 
     override val initialState = initialState ?: State(isIdle = true)
 
@@ -62,37 +63,40 @@ class NoteDetailViewModel(
     }
 
     init {
-        bindActions()
+        viewModelScope.launch {
+            bindActions()
+        }
     }
 
-    private fun bindActions() {
-        val loadNoteChange = actions.ofType<Action.LoadNoteDetail>()
-            .switchMap { action ->
-                noteDetailUseCase.findById(action.noteId)
-                    .subscribeOn(Schedulers.io())
-                    .toObservable()
-                    .map<Change> { Change.NoteDetail(it) }
-                    .onErrorReturn { Change.NoteLoadError(it) }
-                    .startWith(Change.Loading)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    private suspend fun bindActions() {
+        val loadNoteChange = actions.filterIsInstance<Action.LoadNoteDetail>()
+            .mapLatest { action ->
+                Timber.v("Received action: $action, thread; ${Thread.currentThread().name}")
+                Change.NoteDetail(noteDetailUseCase.findById(action.noteId))
             }
+            .flowOn(Dispatchers.IO)
+            .onStart<Change> { emit(Change.Loading) }
+            .catch { emit(Change.NoteLoadError(it)) }
 
-        val deleteNoteChange = actions.ofType<Action.DeleteNote>()
-            .switchMap { action ->
-                noteDetailUseCase.findById(action.noteId)
-                    .subscribeOn(Schedulers.io())
-                    .flatMapCompletable { deleteNoteUseCase.delete(it) }
-                    .toSingleDefault<Change>(Change.NoteDeleted)
-                    .onErrorReturn { Change.NoteDeleteError(it) }
-                    .toObservable()
-                    .startWith(Change.Loading)
+        val deleteNoteChange = actions.filterIsInstance<Action.DeleteNote>()
+            .mapLatest { action ->
+                Timber.v("Received action: $action, thread; ${Thread.currentThread().name}")
+                val findById = noteDetailUseCase.findById(action.noteId)
+                deleteNoteUseCase.delete(findById)
+                Change.NoteDeleted
             }
+            .onStart<Change> { emit(Change.Loading) }
+            .catch { emit(Change.NoteDeleteError(it)) }
+            .flowOn(Dispatchers.IO)
 
-        val allChanges = Observable.merge(loadNoteChange, deleteNoteChange)
+        val allChanges = merge(loadNoteChange, deleteNoteChange)
 
-        disposables += allChanges
-            .scan(initialState, reducer)
+        allChanges.scan(initialState) { state, change -> reducer(state, change) }
             .filter { !it.isIdle && !it.isLoading }
             .distinctUntilChanged()
-            .subscribe(state::postValue, Timber::e)
+            .collect {
+                state.postValue(it)
+            }
     }
 }

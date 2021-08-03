@@ -15,19 +15,30 @@
 */
 package com.ww.roxiesample.presentation.notelist
 
-import com.ww.roxie.BaseViewModel
+import androidx.lifecycle.viewModelScope
+import com.ww.roxie.BaseCoroutineViewModel
 import com.ww.roxie.Reducer
 import com.ww.roxiesample.domain.GetNoteListUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.ofType
-import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.schedulers.Schedulers
-import timber.log.Timber
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.filterNot
+import kotlinx.coroutines.flow.mapLatest
+import kotlinx.coroutines.flow.collect
 
+import kotlinx.coroutines.flow.scan
+import kotlinx.coroutines.launch
+
+@OptIn(ExperimentalCoroutinesApi::class)
 class NoteListViewModel(
     initialState: State?,
     private val loadNoteListUseCase: GetNoteListUseCase
-) : BaseViewModel<Action, State>() {
+) : BaseCoroutineViewModel<Action, State>() {
 
     override val initialState = initialState ?: State(isIdle = true)
 
@@ -51,29 +62,24 @@ class NoteListViewModel(
     }
 
     init {
-        bindActions()
+        viewModelScope.launch {
+            bindActions()
+        }
     }
 
-    private fun bindActions() {
-        val loadNotesChange = actions.ofType<Action.LoadNotes>()
-            .switchMap {
-                loadNoteListUseCase.loadAll()
-                    .subscribeOn(Schedulers.io())
-                    .toObservable()
-                    .map<Change> { Change.Notes(it) }
-                    .defaultIfEmpty(Change.Notes(emptyList()))
-                    .onErrorReturn { Change.Error(it) }
-                    .startWith(Change.Loading)
-            }
+    @ExperimentalCoroutinesApi
+    private suspend fun bindActions() {
+        val loadNotesChange: Flow<Change> = actions.filterIsInstance<Action.LoadNotes>()
+            .mapLatest { Change.Notes(loadNoteListUseCase.loadAll().ifEmpty { emptyList() }) }
+            .catch<Change> { emit(Change.Error(it)) } // TODO: Do we need to emit?
+            .flowOn(Dispatchers.IO)
+            .onStart { emit(Change.Loading) }
 
-        // to handle multiple Changes, use Observable.merge to merge them into a single stream:
-        // val allChanges = Observable.merge(loadNotesChange, ...)
-
-        disposables += loadNotesChange
-            .scan(initialState, reducer)
-            .filter { !it.isIdle }
+        loadNotesChange.scan(initialState) { state, change -> reducer(state, change) }
+            .filterNot { it.isIdle }
             .distinctUntilChanged()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(state::setValue, Timber::e)
+            .collect {
+                state.value = it
+            }
     }
 }
