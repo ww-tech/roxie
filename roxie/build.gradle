@@ -11,13 +11,17 @@ android {
         versionCode rootProject.ext.libVersionCode
         versionName rootProject.ext.libVersionName
     }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
     }
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // ViewModel and LiveData
     compileOnly "androidx.lifecycle:lifecycle-extensions:$rootProject.ext.lifecycleVersion"
@@ -25,8 +29,5 @@ dependencies {
     compileOnly "io.reactivex.rxjava2:rxjava:$rootProject.ext.rxJavaVersion"
 
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
-    testImplementation 'org.amshove.kluent:kluent:1.45'
+    testImplementation 'org.amshove.kluent:kluent:1.68'
 }
-
-// applied specifically at the bottom
-apply from: './scripts/bintrayConfig.gradle'
