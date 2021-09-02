@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/)
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2021-09-02
+- Publish Roxie to Maven Central [#28](https://github.com/ww-tech/roxie/pull/28)
+- Refactor sample to use View Binding [#27](https://github.com/ww-tech/roxie/pull/27)
+- Update project dependencies [#26](https://github.com/ww-tech/roxie/pull/26)
+
 ## [0.4.0] - 2019-01-22
 - Add release process documentation [#6](https://github.com/ww-tech/roxie/pull/6)
 

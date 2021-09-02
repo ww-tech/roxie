@@ -15,6 +15,10 @@ buildscript {
     }
 }
 
+plugins {
+    id("io.github.gradle-nexus.publish-plugin") version "1.1.0"
+}
+
 allprojects {
     repositories {
         google()
@@ -48,11 +52,13 @@ ext {
 
     // Roxie Library
     libVersionCode = 2
-    libVersionName = '0.4.0'
+    libVersionName = '0.5.0'
 
     libPomUrl = 'https://github.com/ww-tech/roxie'
     libGithubRepo = 'ww-tech/roxie'
     libModuleName = 'roxie'
     libModuleDesc = 'Lightweight Android library for building reactive apps.'
-    libBintrayName = 'roxie'
+    libGroupId = 'com.ww'
 }
+
+apply from: "${rootDir}/scripts/publish-root.gradle"

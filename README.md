@@ -52,7 +52,7 @@ Add the following Gradle dependency to your project `build.gradle` file:
 
 ```groovy
 dependencies {
-    implementation 'com.ww:roxie:0.4.0'
+    implementation 'com.ww:roxie:0.5.0'
 }
 ```
 
