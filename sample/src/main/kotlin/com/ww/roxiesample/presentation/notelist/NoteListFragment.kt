@@ -25,10 +25,10 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ww.roxiesample.R
+import com.ww.roxiesample.databinding.NoteListBinding
 import com.ww.roxiesample.domain.GetNoteListUseCase
 import com.ww.roxiesample.domain.Note
 import com.ww.roxiesample.presentation.notedetail.NoteDetailFragment
-import kotlinx.android.synthetic.main.note_list.*
 
 class NoteListFragment : Fragment() {
 
@@ -42,12 +42,16 @@ class NoteListFragment : Fragment() {
 
     private lateinit var viewModel: NoteListViewModel
 
+    private var _binding: NoteListBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.note_list, container, false)
+        _binding = NoteListBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,6 +69,11 @@ class NoteListFragment : Fragment() {
         viewModel.dispatch(Action.LoadNotes)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun renderState(state: State) {
         with(state) {
             when {
@@ -76,24 +85,24 @@ class NoteListFragment : Fragment() {
     }
 
     private fun renderLoadingState() {
-        loadingIndicator.visibility = View.VISIBLE
+        binding.loadingIndicator.visibility = View.VISIBLE
     }
 
     private fun renderErrorState() {
-        loadingIndicator.visibility = View.GONE
+        binding.loadingIndicator.visibility = View.GONE
         Toast.makeText(requireContext(), R.string.error_loading_notes, Toast.LENGTH_LONG).show()
     }
 
     private fun renderNotesState(notes: List<Note>) {
-        loadingIndicator.visibility = View.GONE
+        binding.loadingIndicator.visibility = View.GONE
         recyclerViewAdapter.updateNotes(notes)
-        notesRecyclerView.visibility = View.VISIBLE
+        binding.notesRecyclerView.visibility = View.VISIBLE
     }
 
     private fun setupRecyclerView() {
-        notesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
-        notesRecyclerView.adapter = recyclerViewAdapter
-        notesRecyclerView.setHasFixedSize(true)
+        binding.notesRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+        binding.notesRecyclerView.adapter = recyclerViewAdapter
+        binding.notesRecyclerView.setHasFixedSize(true)
     }
 
     private fun onNoteClicked(note: Note) {

@@ -24,10 +24,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ww.roxiesample.R
+import com.ww.roxiesample.databinding.NoteDetailBinding
 import com.ww.roxiesample.domain.DeleteNoteUseCase
 import com.ww.roxiesample.domain.GetNoteDetailUseCase
 import com.ww.roxiesample.domain.Note
-import kotlinx.android.synthetic.main.note_detail.*
 
 private const val NOTE_ID = "noteId"
 
@@ -51,12 +51,16 @@ class NoteDetailFragment : Fragment() {
 
     private lateinit var viewModel: NoteDetailViewModel
 
+    private var _binding: NoteDetailBinding? = null
+    private val binding get() = _binding!!
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.note_detail, container, false)
+        _binding = NoteDetailBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -76,9 +80,14 @@ class NoteDetailFragment : Fragment() {
             viewModel.dispatch(Action.LoadNoteDetail(noteId))
         }
 
-        deleteNoteButton.setOnClickListener {
+        binding.deleteNoteButton.setOnClickListener {
             viewModel.dispatch(Action.DeleteNote(noteId))
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun renderState(state: State) {
@@ -93,16 +102,16 @@ class NoteDetailFragment : Fragment() {
     }
 
     private fun renderNoteDetailState(note: Note) {
-        noteIdView.visibility = View.VISIBLE
-        noteTextView.visibility = View.VISIBLE
-        noteIdView.text = String.format(getString(R.string.note_detail_id), note.id)
-        noteTextView.text = String.format(getString(R.string.note_detail_text), note.text)
+        binding.noteIdView.visibility = View.VISIBLE
+        binding.noteTextView.visibility = View.VISIBLE
+        binding.noteIdView.text = String.format(getString(R.string.note_detail_id), note.id)
+        binding.noteTextView.text = String.format(getString(R.string.note_detail_text), note.text)
     }
 
     private fun renderLoadNoteDetailError() {
         Toast.makeText(requireContext(), R.string.error_loading_note, Toast.LENGTH_LONG).show()
-        noteIdView.visibility = View.GONE
-        noteTextView.visibility = View.GONE
+        binding.noteIdView.visibility = View.GONE
+        binding.noteTextView.visibility = View.GONE
     }
 
     private fun renderNoteDeleteError() {
