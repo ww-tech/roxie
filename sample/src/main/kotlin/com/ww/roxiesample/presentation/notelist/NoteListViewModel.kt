@@ -15,19 +15,19 @@
 */
 package com.ww.roxiesample.presentation.notelist
 
-import com.ww.roxie.BaseViewModel
-import com.ww.roxie.Reducer
+import com.ww.roxie.*
+import com.ww.roxie.coroutines.CoroutineViewModel
+import com.ww.roxie.coroutines.defaultOnEmpty
+import com.ww.roxie.coroutines.ofType
 import com.ww.roxiesample.domain.GetNoteListUseCase
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.ofType
-import io.reactivex.rxkotlin.plusAssign
-import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.*
 import timber.log.Timber
 
 class NoteListViewModel(
     initialState: State?,
     private val loadNoteListUseCase: GetNoteListUseCase
-) : BaseViewModel<Action, State>() {
+) : CoroutineViewModel<Action, State>() {
 
     override val initialState = initialState ?: State(isIdle = true)
 
@@ -55,25 +55,33 @@ class NoteListViewModel(
     }
 
     private fun bindActions() {
-        val loadNotesChange = actions.ofType<Action.LoadNotes>()
-            .switchMap {
+        val loadNotesChange: Flow<Change> = actions.asFlow()
+            .ofType<Action.LoadNotes>()
+            .flatMapLatest {
                 loadNoteListUseCase.loadAll()
-                    .subscribeOn(Schedulers.io())
-                    .toObservable()
-                    .map<Change> { Change.Notes(it) }
-                    .defaultIfEmpty(Change.Notes(emptyList()))
-                    .onErrorReturn { Change.Error(it) }
-                    .startWith(Change.Loading)
+                    .flowOn(Dispatchers.IO)
+                    .map { Change.Notes(it) }
+                    .defaultOnEmpty(Change.Notes(emptyList()))
+                    .catch<Change> {
+                        emit(Change.Error(it))
+                    }
+                    .onStart { emit(Change.Loading) }
             }
 
         // to handle multiple Changes, use Observable.merge to merge them into a single stream:
         // val allChanges = Observable.merge(loadNotesChange, ...)
 
-        disposables += loadNotesChange
-            .scan(initialState, reducer)
+        loadNotesChange
+            .scan(initialState) { state, change ->
+                reducer.invoke(state, change)
+            }
             .filter { !it.isIdle }
             .distinctUntilChanged()
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(state::setValue, Timber::e)
+            .flowOn(Dispatchers.Main)
+            .observeState()
+            .catch {
+                Timber.e(it)
+            }
+            .launchHere()
     }
 }

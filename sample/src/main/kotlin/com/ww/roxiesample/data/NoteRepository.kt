@@ -27,7 +27,7 @@ object NoteRepository {
         Note(3, "note3")
     )
 
-    fun loadAll(): List<Note> = notes.toList()
+    suspend fun loadAll(): List<Note> = notes.toList()
 
     fun findById(id: Long): Note? = notes.firstOrNull { it.id == id }
 

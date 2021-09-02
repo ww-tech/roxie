@@ -15,8 +15,8 @@
 */
 package com.ww.roxiesample.presentation.notedetail
 
-import com.ww.roxie.BaseViewModel
 import com.ww.roxie.Reducer
+import com.ww.roxie.rxjava2.RxViewModel
 import com.ww.roxiesample.domain.DeleteNoteUseCase
 import com.ww.roxiesample.domain.GetNoteDetailUseCase
 import io.reactivex.Observable
@@ -29,7 +29,7 @@ class NoteDetailViewModel(
     initialState: State?,
     private val noteDetailUseCase: GetNoteDetailUseCase,
     private val deleteNoteUseCase: DeleteNoteUseCase
-) : BaseViewModel<Action, State>() {
+) : RxViewModel<Action, State>() {
 
     override val initialState = initialState ?: State(isIdle = true)
 
