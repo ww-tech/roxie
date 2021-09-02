@@ -1,0 +1,72 @@
+apply plugin: 'maven-publish'
+apply plugin: 'signing'
+
+task androidSourcesJar(type: Jar) {
+    archiveClassifier.set('sources')
+    if (project.plugins.findPlugin("com.android.library")) {
+        from android.sourceSets.main.java.srcDirs
+        from android.sourceSets.main.kotlin.srcDirs
+    } else {
+        from sourceSets.main.java.srcDirs
+        from sourceSets.main.kotlin.srcDirs
+    }
+}
+
+artifacts {
+    archives androidSourcesJar
+}
+
+group = rootProject.ext.libGroupId
+version = rootProject.ext.libVersionName
+
+afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                groupId rootProject.ext.libGroupId
+                artifactId rootProject.ext.libModuleName
+                version rootProject.ext.libVersionName
+                if (project.plugins.findPlugin("com.android.library")) {
+                    from components.release
+                } else {
+                    from components.java
+                }
+
+                artifact androidSourcesJar
+
+                pom {
+                    name = rootProject.ext.libModuleName
+                    description = rootProject.ext.libModuleDesc
+                    url = rootProject.ext.libPomUrl
+                    licenses {
+                        license {
+                            name = 'Roxie License'
+                            url = 'https://github.com/ww-tech/roxie/blob/master/LICENSE'
+                        }
+                    }
+                    developers {
+                        developer {
+                            id = 'michaelcarrano'
+                            name = 'Michael Carrano'
+                            email = 'michael.carrano@ww.com'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:github.com/ww-tech/roxie.git'
+                        developerConnection = 'scm:git:ssh://github.com/ww-tech/roxie.git'
+                        url = 'https://github.com/ww-tech/roxie/tree/master'
+                    }
+                }
+            }
+        }
+    }
+}
+
+signing {
+    useInMemoryPgpKeys(
+            rootProject.ext["signing.keyId"],
+            rootProject.ext["signing.key"],
+            rootProject.ext["signing.password"],
+    )
+    sign publishing.publications
+}

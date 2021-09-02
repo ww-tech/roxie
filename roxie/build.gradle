@@ -31,3 +31,5 @@ dependencies {
     testImplementation "junit:junit:$rootProject.ext.junitVersion"
     testImplementation 'org.amshove.kluent:kluent:1.68'
 }
+
+apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
